@@ -1,0 +1,48 @@
+{
+  "name": "@rwjsexperiments/react",
+  "version": "0.0.1",
+  "author": "marceloalves",
+  "description": "Provider to replace RedwoodJS apollo-client with react-query and graphql-request",
+  "homepage": "https://github.com/marceloalves/redwoodjs-react-query-provider#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marceloalves/redwoodjs-react-query-provider.git",
+    "directory": "packages/react"
+  },
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/react.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "graphql-request": "^3.4.0"
+  },
+  "peerDependencies": {
+    "@redwoodjs/web": "^0.23.0",
+    "react": ">=16",
+    "react-query": "^3.5.16"
+  },
+  "devDependencies": {
+    "@redwoodjs/auth": "^0.23.0",
+    "@redwoodjs/web": "^0.23.0",
+    "@redwoodjs/core": "^0.23.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "graphql": "^15.4.0",
+    "react-query": "^3.5.16",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
