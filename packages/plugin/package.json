@@ -1,0 +1,31 @@
+{
+  "name": "@rwjsexperiments/plugin",
+  "version": "0.0.1",
+  "description": "Babel plugin to support react-query-based Cells in RedwoodJS",
+  "author": "Marcelo Alves",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marceloalves/redwoodjs-react-query-provider.git",
+    "directory": "packages/plugin"
+  },
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/utils.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "babel-plugin-tester": "^10.0.0"
+  }
+}
