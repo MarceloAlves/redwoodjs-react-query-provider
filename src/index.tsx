@@ -6,21 +6,40 @@ import { GraphQLClient } from 'graphql-request'
 import { DocumentNode, getOperationAST } from 'graphql'
 import { Variables } from 'graphql-request/dist/types'
 import { GraphQLHookOptions } from '@redwoodjs/web/dist/components/GraphQLHooksProvider'
+import { useAuth } from '@redwoodjs/auth'
 
 type UseCustomQueryOptions = GraphQLHookOptions & UseQueryOptions
 
 const useGraphqlClient = () => {
-  const { uri, headers } = useFetchConfig()
-  const graphqlClient = new GraphQLClient(uri, { headers })
+  const { uri } = useFetchConfig()
+  const graphqlClient = new GraphQLClient(uri)
   return graphqlClient
 }
 
 export const useCustomQuery = (query: DocumentNode, { variables, ...options }: UseCustomQueryOptions) => {
+  const { isAuthenticated, getToken, type } = useAuth()
   const document = getOperationAST(query)
   const name = document?.name?.value
   const graphqlClient = useGraphqlClient()
 
-  const result = useQuery([name, variables], () => graphqlClient.request(query, variables), options)
+  const result = useQuery(
+    [name, variables],
+    async () => {
+      let requestHeaders: HeadersInit = {}
+
+      if (isAuthenticated) {
+        const token = await getToken()
+
+        requestHeaders = {
+          'auth-provider': type,
+          authorization: `Bearer ${token}`,
+        }
+      }
+
+      return graphqlClient.request(query, variables, requestHeaders)
+    },
+    options
+  )
 
   return {
     loading: result.isLoading,
@@ -30,14 +49,25 @@ export const useCustomQuery = (query: DocumentNode, { variables, ...options }: U
 }
 
 export const useCustomMutation = (query: DocumentNode, options: UseMutationOptions) => {
+  const { isAuthenticated, getToken, type } = useAuth()
   const graphqlClient = useGraphqlClient()
 
   // TODO: Fix types here
   // @ts-ignore
-  const result = useMutation(
-    ({ variables }: { variables: Variables }) => graphqlClient.request(query, variables),
-    options
-  )
+  const result = useMutation(async ({ variables }: { variables: Variables }) => {
+    let requestHeaders: HeadersInit = {}
+
+    if (isAuthenticated) {
+      const token = await getToken()
+
+      requestHeaders = {
+        'auth-provider': type,
+        authorization: `Bearer ${token}`,
+      }
+    }
+
+    return graphqlClient.request(query, variables, requestHeaders)
+  }, options)
 
   return [result.mutate, { loading: result.isLoading, ...result }]
 }
@@ -45,8 +75,7 @@ export const useCustomMutation = (query: DocumentNode, options: UseMutationOptio
 export function RedwoodReactQueryProvider({ children }: { children: React.ReactNode }) {
   return (
     <FetchConfigProvider>
-      {/* @ts-ignore */}
-      <GraphQLHooksProvider useQuery={useCustomQuery} useMutation={useCustomMutation}>
+      <GraphQLHooksProvider useQuery={useCustomQuery as any} useMutation={useCustomMutation as any}>
         {children}
       </GraphQLHooksProvider>
     </FetchConfigProvider>

@@ -25,6 +25,7 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
+    "@redwoodjs/auth": "^0.23.0",
     "@redwoodjs/web": "^0.23.0",
     "react": ">=16",
     "react-query": "^3.5.16"
