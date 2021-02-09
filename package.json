@@ -4,7 +4,7 @@
   "description": "Provider to replace RedwoodJS apollo-client with react-query and graphql-request",
   "repository": "marceloalves/redwoodjs-react-query-provider",
   "homepage": "https://github.com/marceloalves/redwoodjs-react-query-provider#readme",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
