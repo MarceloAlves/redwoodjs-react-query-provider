@@ -126,7 +126,7 @@ export const useCustomMutation = (
   return [result.mutate, { loading: result.isLoading, ...result }]
 }
 
-export const ReactQueryProvider = ({
+export const RedwoodReactQueryProvider = ({
   children,
 }: {
   children: React.ReactNode
